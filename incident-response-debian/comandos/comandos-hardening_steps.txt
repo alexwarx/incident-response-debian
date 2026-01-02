@@ -1,0 +1,49 @@
+# Debian Linux Incident Response - Hardening Commands
+
+# 1. SSH hardening
+nano /etc/ssh/sshd_config
+# Set:
+# PermitRootLogin no
+# PasswordAuthentication no
+# KbdInteractiveAuthentication no
+# UsePAM yes
+
+systemctl restart ssh
+sshd -T | egrep "permitrootlogin|passwordauthentication|kbdinteractiveauthentication|usepam"
+
+# 2. Disable FTP (vsftpd)
+systemctl stop vsftpd
+systemctl disable vsftpd
+systemctl status vsftpd
+ss -lntup | grep :21
+
+# 3. Disable Apache directory listing for WordPress uploads
+nano /etc/apache2/sites-available/000-default.conf
+# Added:
+# <Directory /var/www/html/wp-content/uploads>
+#   Options -Indexes
+# </Directory>
+
+apache2ctl configtest
+systemctl reload apache2
+
+# 4. Secure wp-config.php
+chown www-data:www-data /var/www/html/wp-config.php
+chmod 640 /var/www/html/wp-config.php
+ls -l /var/www/html/wp-config.php
+stat /var/www/html/wp-config.php
+
+# 5. Enable firewall
+apt update
+apt install ufw
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow 22/tcp
+ufw allow 80/tcp
+ufw enable
+ufw status verbose
+
+# 6. External validation (from Kali Linux)
+nmap -Pn -sS -p 21,22,25,80,3306 192.168.151.3
+curl -I http://192.168.151.3/wp-content/uploads/
+ssh root@192.168.151.3
