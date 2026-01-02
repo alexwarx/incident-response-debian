@@ -11,6 +11,3 @@ La VM contiene:
 
 📦 Descarga de la máquina virtual (OVA):
 🔗 https://drive.google.com/file/d/1MigsYvxvs--smH01Fj7pfu6fBbyXJvaF/view?usp=drive_link
-
-Usuario: debian  
-Contraseña: 123456
