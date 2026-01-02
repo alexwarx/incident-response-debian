@@ -5,7 +5,6 @@ This project documents the analysis, containment, remediation and validation of 
 
 ## Contents
 - **informe/** – Final incident response report in PDF
-- **evidencias/** – Screenshots proving the applied security controls
 - **comandos/** – Commands used to harden the system
 
 ## Incident Summary
